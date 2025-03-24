@@ -1,0 +1,101 @@
+server:
+  forward-headers-strategy: native
+  address: 0.0.0.0
+  port: 8888
+  ssl:
+    enabled: false
+
+spring:
+  # Backend: <서비스이름>-service
+  # 그 외: <서비스이름>
+  application:
+    name: <서비스이름>-service
+
+  web:
+    resources:
+      add-mappings: true
+
+  # JSON Web Token의 Secret Key : [Api Gateway], [User Service]
+  jwt:
+    secret: ${JWT_SECRET_KEY}
+
+  # JPA
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate:
+        storage_engine: innodb
+        format_sql: false
+        use_sql_comments: false
+    open-in-view: false
+    show_sql: true
+
+  # NoSQL
+  data:
+    # MongoDB
+    mongodb:
+      host: ${MONGODB_HOST}
+      port: ${MONGODB_PORT}
+      username: ${MONGODB_USERNAME}
+      password: ${MONGODB_PASSWORD}
+      database: <서비스이름>-<데이터베이스유형>
+    # Redis
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+      database: 0
+      timeout: 6000ms
+
+
+  # RDBMS
+  datasource:
+    # MySQL
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/<서비스이름>-<데이터베이스유형>?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+
+  # Spring Cloud
+  cloud:
+    # Eureka
+    client:
+      hostname: <서비스이름>-service
+    # Config
+    config:
+      uri: ${CONFIG_SERVER_URI}
+    # Bus
+    bus:
+      enabled: true
+
+  # RabbitMQ: Spring Cloud Bus 활용을 위한 설정
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+
+# Swagger
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+# Eureka 통신
+eureka:
+  instance:
+    prefer-ip-address: false
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka:8761/eureka
+
+minio:
+  url: ${MINIO_URI}
+  access-key: ${MINIO_ACCESS_KEY}
+  secret-key: ${MINIO_SECRET_KEY}
