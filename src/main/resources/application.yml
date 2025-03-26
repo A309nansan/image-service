@@ -1,30 +1,31 @@
 server:
   forward-headers-strategy: native
   address: 0.0.0.0
-  port: 8888
+  # user-service       : 18080
+  # category-service   : 18081
+  # m-service          : 18082
+  # en-service         : 18083
+  port: <Port Number>
+  servlet:
+    context-path: /api/v1/<Service Name>
   ssl:
     enabled: false
 
 spring:
-  # Backend: <서비스이름>-service
-  # 그 외: <서비스이름>
   application:
-    name: <서비스이름>-service
+    name: <Service Name>-service
 
   web:
     resources:
       add-mappings: true
-
-  # JSON Web Token의 Secret Key : [Api Gateway], [User Service]
-  jwt:
-    secret: ${JWT_SECRET_KEY}
 
   # JPA
   jpa:
     hibernate:
       ddl-auto: create
     database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    # Hibernate 6.x 이상부터는 MySQL8Dialect가 deprecated (더 이상 권장되지 않음) 되었고, MySQLDialect 하나로 통합
+    database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
         storage_engine: innodb
@@ -41,7 +42,7 @@ spring:
       port: ${MONGODB_PORT}
       username: ${MONGODB_USERNAME}
       password: ${MONGODB_PASSWORD}
-      database: <서비스이름>-<데이터베이스유형>
+      database: <Service Name>-mongodb
     # Redis
     redis:
       host: ${REDIS_HOST}
@@ -55,18 +56,27 @@ spring:
   datasource:
     # MySQL
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/<서비스이름>-<데이터베이스유형>?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/<Service Name>-mysql?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
+
+  # Spring Boot 3.1 이상부터는 spring.config.import를 명시적으로 써야 Config Server를 import할 수 있다.
+  config:
+    import: 'configserver:'
 
   # Spring Cloud
   cloud:
     # Eureka
     client:
-      hostname: <서비스이름>-service
+      hostname: <Service Name>-service
     # Config
     config:
       uri: ${CONFIG_SERVER_URI}
+      username: ${CONFIG_SERVER_USERNAME}
+      password: ${CONFIG_SERVER_PASSWORD}
+      name: spring
+      profile: dev
+      label: main
     # Bus
     bus:
       enabled: true
@@ -96,6 +106,6 @@ eureka:
       defaultZone: http://eureka:8761/eureka
 
 minio:
-  url: ${MINIO_URI}
+  url: https://s3.nansan.site
   access-key: ${MINIO_ACCESS_KEY}
   secret-key: ${MINIO_SECRET_KEY}
