@@ -26,7 +26,7 @@ public class RedisConfig {
         // Value 타입이 어떤 값이 와도 안전하게 직렬화하는 설정
         template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 
-        // Hash 자료형에 대항ㄴ 설정 값
+        // Hash 자료형에 대한 설정 값
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
 
