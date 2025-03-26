@@ -5,15 +5,24 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
 
     @Bean
     public OpenAPI userServiceOpenAPI() {
+        
         return new OpenAPI()
+                .servers(List.of(
+                        new Server()
+                                .url("https://nansan.site/api/v1/<Service Name>")
+                                .description("<Service Name>-Service Swagger Document")
+                ))
                 .components(new Components()
                         .addSecuritySchemes("X-User-Id",
                                 new SecurityScheme()
@@ -36,10 +45,9 @@ public class SwaggerConfig {
                         .addList("X-User-Nickname")
                         .addList("X-User-Role")
                 )
-                # Service에 맞게 설정 값 변경 필요
                 .info(new Info()
-                                .title("Nansan: User Service API")
-                                .description("유저 관련 기능 API")
+                                .title("Nansan: <Service Name> Service API")
+                                .description("Custom Message")
                                 .version("v1")
                 );
     }
