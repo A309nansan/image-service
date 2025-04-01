@@ -22,7 +22,7 @@ spring:
   cloud:
     # Eureka
     client:
-      hostname: <Service Name>-service
+      hostname: image-service
     # Config
     config:
       uri: ${CONFIG_SERVER_URI}
