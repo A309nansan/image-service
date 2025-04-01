@@ -1,8 +1,10 @@
 package site.nansan.global.exception;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -46,11 +48,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ErrorResponse.toResponseEntity(CommonErrorCode.VALIDATION_FAILED, errors);
     }
 
-//    @Override
-//    protected ResponseEntity<Object> handleExceptionInternal(
-//            Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
-//        return ErrorResponse.toResponseEntity((HttpStatus) statusCode);
-//    }
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(
+            Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+        return ErrorResponse.toResponseEntity((HttpStatus) statusCode);
+    }
 
     /**
      * [@RequestParam], [@PathVariable] 유효성 실패 처리
@@ -67,8 +69,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ErrorResponse.toResponseEntity(CommonErrorCode.VALIDATION_FAILED, errors);
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<Object> handleException(Exception e) {
-//        return ErrorResponse.toResponseEntity(GlobalErrorCode.INTERNAL_SERVER_ERROR);
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleException(Exception e) {
+        return ErrorResponse.toResponseEntity(CommonErrorCode.VALIDATION_FAILED);
+    }
 }
