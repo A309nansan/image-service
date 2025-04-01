@@ -18,8 +18,8 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(UserException.class)
-    public ResponseEntity<Object> handleNansanException(UserException e) {
+    @ExceptionHandler(FileUploadException.class)
+    public ResponseEntity<Object> handleFileUploadException(FileUploadException e) {
 
         log.warn("[{}]: \"{}\"", e.getErrorCode().getCode(), e.getErrorCode().getMessage());
         return ErrorResponse.toResponseEntity(e.getErrorCode());
