@@ -1,66 +1,20 @@
 server:
   forward-headers-strategy: native
   address: 0.0.0.0
-  # user-service       : 18080
-  # category-service   : 18081
-  # m-service          : 18082
-  # en-service         : 18083
-  port: <Port Number>
+  port: 18084
   servlet:
-    context-path: /api/v1/<Service Name>
+    context-path: /api/v1/image
   ssl:
     enabled: false
 
 spring:
   application:
-    name: <Service Name>-service
+    name: image-service
 
   web:
     resources:
       add-mappings: true
 
-  # JPA
-  jpa:
-    hibernate:
-      ddl-auto: create
-    database: mysql
-    # Hibernate 6.x 이상부터는 MySQL8Dialect가 deprecated (더 이상 권장되지 않음) 되었고, MySQLDialect 하나로 통합
-    database-platform: org.hibernate.dialect.MySQLDialect
-    properties:
-      hibernate:
-        storage_engine: innodb
-        format_sql: false
-        use_sql_comments: false
-    open-in-view: false
-    show_sql: true
-
-  # NoSQL
-  data:
-    # MongoDB
-    mongodb:
-      host: ${MONGODB_HOST}
-      port: ${MONGODB_PORT}
-      username: ${MONGODB_USERNAME}
-      password: ${MONGODB_PASSWORD}
-      database: <Service Name>-mongodb
-    # Redis
-    redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
-      password: ${REDIS_PASSWORD}
-      database: 0
-      timeout: 6000ms
-
-
-  # RDBMS
-  datasource:
-    # MySQL
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/<Service Name>-mysql?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
-
-  # Spring Boot 3.1 이상부터는 spring.config.import를 명시적으로 써야 Config Server를 import할 수 있다.
   config:
     import: 'configserver:'
 
@@ -80,20 +34,6 @@ spring:
     # Bus
     bus:
       enabled: true
-
-  # RabbitMQ: Spring Cloud Bus 활용을 위한 설정
-  rabbitmq:
-    host: ${RABBITMQ_HOST}
-    port: ${RABBITMQ_PORT}
-    username: ${RABBITMQ_USERNAME}
-    password: ${RABBITMQ_PASSWORD}
-
-# Swagger
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    enabled: true
 
 # Eureka 통신
 eureka:
