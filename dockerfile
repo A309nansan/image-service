@@ -6,12 +6,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 WORKDIR /app
 
-COPY build/libs/*.jar <Service Name>-service.jar
+COPY build/libs/*.jar image-service.jar
 
-# user-service       : 18080
-# category-service   : 18081
-# m-service          : 18082
-# en-service         : 18083
-EXPOSE <Port Number>
+EXPOSE 18084
 
-ENTRYPOINT ["java", "-jar", "/app/<ServiceName>-service.jar"]
+ENTRYPOINT ["java", "-jar", "/app/image-service.jar"]
