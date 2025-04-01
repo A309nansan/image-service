@@ -1,14 +1,12 @@
 package site.nansan.global.util;
 
 import io.minio.*;
-import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -19,32 +17,15 @@ public class MinioUtil {
     @Value("${minio.bucket.name}")
     private String BUCKET_NAME;
 
-    public String uploadFile(MultipartFile file) throws Exception {
+    public void uploadFile(MultipartFile file, String fileName) throws Exception {
         createBucketIfNotExists();
-
-        String newFileName = convertFileName(file.getOriginalFilename());
         InputStream inputStream = file.getInputStream();
-
-        // 업로드
         minioClient.putObject(
                 PutObjectArgs.builder()
                         .bucket(BUCKET_NAME)
-                        .object(newFileName)
+                        .object(fileName)
                         .stream(inputStream, file.getSize(), -1)
                         .contentType(file.getContentType())
-                        .build()
-        );
-
-        return newFileName; // 저장된 파일 이름 반환
-    }
-
-    public String getPreSignedUrl(String fileName) throws Exception {
-        return minioClient.getPresignedObjectUrl(
-                GetPresignedObjectUrlArgs.builder()
-                        .bucket(BUCKET_NAME)
-                        .object(fileName)
-                        .method(Method.GET)
-                        .expiry(10 * 60) // 10분 유효
                         .build()
         );
     }
@@ -57,12 +38,4 @@ public class MinioUtil {
         }
     }
 
-    private String convertFileName(String originalFileName) throws Exception {
-
-        if (originalFileName.isEmpty()) {
-            throw new Exception();
-        }
-
-        return UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
-    }
 }
