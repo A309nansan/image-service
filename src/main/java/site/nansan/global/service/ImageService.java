@@ -18,14 +18,15 @@ public class ImageService {
     private static final int MAX_RETRIES = 3;
 
     public String uploadImage(String childId, String localDateTime, MultipartFile file) {
-        String hashedFileName = HashUtil.generateHash(childId, localDateTime)+childId;
+        String hashedFileName = HashUtil.generateHash(childId, localDateTime);
+        String objectPath = childId + "/" + hashedFileName;
         int attempts = 0;
         while (attempts < MAX_RETRIES) {
             try {
                 // 해싱된 파일명을 사용하여 이미지를 저장
-                minioUtil.uploadFile(file, hashedFileName);
-                log.info("이미지 업로드 성공: {}", hashedFileName);
-                return hashedFileName;
+                minioUtil.uploadFile(file, objectPath);
+                log.info("이미지 업로드 성공: {}", objectPath);
+                return objectPath;
             } catch (Exception e) {
                 attempts++;
                 log.error("이미지 업로드 시도 {} 실패: {}", attempts, e.getMessage());
