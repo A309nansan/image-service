@@ -24,6 +24,15 @@ public class ImageService {
         String hashSource = childId + localDateTime.toString();
         String hashedFileName = HashUtil.generateHash(hashSource);
         String objectPath = localDateTime.toLocalDate() + "/" + hashedFileName;
+
+        log.info(childId);
+        log.info(String.valueOf(localDateTime));
+        log.info(String.valueOf(file));
+        log.info(hashSource);
+        log.info(hashedFileName);
+        log.info(objectPath);
+
+
         return uploadImageInternal("solved-problems", objectPath, file);
     }
 
