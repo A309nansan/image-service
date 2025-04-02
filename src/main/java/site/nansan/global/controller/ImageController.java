@@ -23,7 +23,7 @@ public class ImageController {
 
         String hashedFileName = imageService.uploadImage(
                 request.getChildId(),
-                request.getLocalDateTime().toString(),
+                request.getLocalDateTime(),
                 request.getFile()
         );
 
@@ -39,7 +39,7 @@ public class ImageController {
 
         String hashedFileName = imageService.uploadImage(
                 request.getChildId(),
-                request.getLocalDateTime().toString(),
+                request.getLocalDateTime(),
                 request.getNumber(),
                 request.getFile()
         );
