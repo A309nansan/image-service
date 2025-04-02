@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class UploadImageRequest {
 
     @NotNull(message = "childId is required")
-    private String childId;
+    private Integer childId;
 
     @NotNull(message = "localDateTime is required")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
