@@ -36,10 +36,18 @@ public class ImageService {
         return uploadImageInternal("solved-problems", objectPath, file);
     }
 
-    public String uploadImage(String childId, LocalDateTime localDateTime, int number, MultipartFile file) {
+    public String uploadNumberImage(String childId, LocalDateTime localDateTime, int number, MultipartFile file) {
         String hashSource = childId + localDateTime.toString() + number;
         String hashedFileName = HashUtil.generateHash(hashSource);
         String objectPath = number + "/" + hashedFileName;
+
+        log.info(childId);
+        log.info(String.valueOf(localDateTime));
+        log.info(String.valueOf(file));
+        log.info(hashSource);
+        log.info(hashedFileName);
+        log.info(objectPath);
+
         return uploadImageInternal("number", objectPath, file);
     }
 

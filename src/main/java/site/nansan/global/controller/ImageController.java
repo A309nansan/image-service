@@ -37,7 +37,7 @@ public class ImageController {
             return ResponseEntity.badRequest().body("childId is required");
         }
 
-        String hashedFileName = imageService.uploadImage(
+        String hashedFileName = imageService.uploadNumberImage(
                 request.getChildId().toString(),
                 request.getLocalDateTime(),
                 request.getNumber(),
