@@ -14,7 +14,7 @@ public class MinioUtil {
 
     private final MinioClient minioClient;
 
-    @Value("${minio.bucket.name}")
+    @Value("${minio.bucket.user-info}")
     private String BUCKET_NAME;
 
     public void uploadFile(MultipartFile file, String fileName) throws Exception {

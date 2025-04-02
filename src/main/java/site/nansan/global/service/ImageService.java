@@ -18,7 +18,7 @@ public class ImageService {
     private static final int MAX_RETRIES = 3;
 
     public String uploadImage(String childId, String localDateTime, MultipartFile file) {
-        String hashedFileName = HashUtil.generateHash(childId, localDateTime);
+        String hashedFileName = HashUtil.generateHash(childId, localDateTime)+childId;
         int attempts = 0;
         while (attempts < MAX_RETRIES) {
             try {
