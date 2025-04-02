@@ -24,7 +24,7 @@ public class ImageService {
         String hashSource = childId + localDateTime.toString();
         String hashedFileName = HashUtil.generateHash(hashSource);
         String objectPath = localDateTime.toLocalDate() + "/" + hashedFileName;
-        return uploadImageInternal("user-info", objectPath, file);
+        return uploadImageInternal("solved-problems", objectPath, file);
     }
 
     public String uploadImage(String childId, LocalDateTime localDateTime, int number, MultipartFile file) {
