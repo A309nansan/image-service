@@ -1,5 +1,6 @@
 package site.nansan.global.controller;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +19,10 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam("childId") String childId,
-                                              @RequestParam("localDateTime") LocalDateTime localDateTime,
-                                              @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<String> uploadImage(
+            @RequestParam("childId") @NotNull(message = "childId is required") String childId,
+            @RequestParam("localDateTime") @NotNull(message = "localDateTime is required") LocalDateTime localDateTime,
+            @RequestPart("file") @NotNull(message = "file is required") MultipartFile file) {
 
         String hashedFileName = imageService.uploadImage(childId, localDateTime.toString(), file);
 
@@ -28,10 +30,11 @@ public class ImageController {
     }
 
     @PostMapping("/upload/number")
-    public ResponseEntity<String> uploadNumberImage(@RequestParam("childId") String childId,
-                                                    @RequestParam("localDateTime") LocalDateTime localDateTime,
-                                                    @RequestParam("number") int number,
-                                              @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<String> uploadNumberImage(
+            @RequestParam("childId") @NotNull(message = "childId is required") String childId,
+            @RequestParam("localDateTime") @NotNull(message = "localDateTime is required") LocalDateTime localDateTime,
+            @RequestParam("number") @NotNull(message = "number is required")  int number,
+            @RequestPart("file") @NotNull(message = "file is required") MultipartFile file) {
 
         String hashedFileName = imageService.uploadImage(childId, localDateTime.toString(), number, file);
 
