@@ -17,12 +17,12 @@ public class ImageController {
     @PostMapping("/upload")
     public ResponseEntity<String> uploadImage(@Valid @ModelAttribute UploadImageRequest request) {
 
-        if (request.getChildId() == null || request.getChildId().trim().isEmpty()) {
+        if (request.getChildId() == null || request.getChildId() == 0) {
             return ResponseEntity.badRequest().body("childId is required");
         }
 
         String hashedFileName = imageService.uploadImage(
-                request.getChildId(),
+                request.getChildId().toString(),
                 request.getLocalDateTime(),
                 request.getFile()
         );
@@ -33,12 +33,12 @@ public class ImageController {
     @PostMapping("/upload/number")
     public ResponseEntity<String> uploadNumberImage(@Valid @ModelAttribute UploadNumberImageRequest request) {
 
-        if (request.getChildId() == null || request.getChildId().trim().isEmpty()) {
+        if (request.getChildId() == null || request.getChildId() == 0) {
             return ResponseEntity.badRequest().body("childId is required");
         }
 
         String hashedFileName = imageService.uploadImage(
-                request.getChildId(),
+                request.getChildId().toString(),
                 request.getLocalDateTime(),
                 request.getNumber(),
                 request.getFile()
