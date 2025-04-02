@@ -49,5 +49,3 @@ minio:
   url: https://s3.nansan.site
   access-key: ${MINIO_ACCESS_KEY}
   secret-key: ${MINIO_SECRET_KEY}
-  bucket:
-    user-info: user

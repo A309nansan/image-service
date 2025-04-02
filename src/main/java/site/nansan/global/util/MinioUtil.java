@@ -14,15 +14,12 @@ public class MinioUtil {
 
     private final MinioClient minioClient;
 
-    @Value("${minio.bucket.user-info}")
-    private String BUCKET_NAME;
-
-    public void uploadFile(MultipartFile file, String fileName) throws Exception {
-        createBucketIfNotExists();
+    public void uploadFile(String bucketName, MultipartFile file, String fileName) throws Exception {
+        createBucketIfNotExists(bucketName);
         InputStream inputStream = file.getInputStream();
         minioClient.putObject(
                 PutObjectArgs.builder()
-                        .bucket(BUCKET_NAME)
+                        .bucket(bucketName)
                         .object(fileName)
                         .stream(inputStream, file.getSize(), -1)
                         .contentType(file.getContentType())
@@ -31,10 +28,9 @@ public class MinioUtil {
     }
 
     // 버킷이 존재하는지 확인하고 없으면 생성
-    private void createBucketIfNotExists() throws Exception {
-
-        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(BUCKET_NAME).build())) {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(BUCKET_NAME).build());
+    private void createBucketIfNotExists(String bucketName) throws Exception {
+        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
         }
     }
 

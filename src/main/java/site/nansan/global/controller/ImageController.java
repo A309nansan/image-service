@@ -27,4 +27,14 @@ public class ImageController {
         return ResponseEntity.ok(hashedFileName);
     }
 
+    @PostMapping("/upload/number")
+    public ResponseEntity<String> uploadNumberImage(@RequestParam("childId") String childId,
+                                                    @RequestParam("localDateTime") LocalDateTime localDateTime,
+                                                    @RequestParam("number") int number,
+                                              @RequestPart("file") MultipartFile file) {
+
+        String hashedFileName = imageService.uploadImage(childId, localDateTime.toString(), number, file);
+
+        return ResponseEntity.ok(hashedFileName);
+    }
 }
