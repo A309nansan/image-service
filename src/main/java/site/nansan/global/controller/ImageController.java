@@ -18,7 +18,7 @@ public class ImageController {
     public ResponseEntity<String> uploadImage(@Valid @ModelAttribute UploadImageRequest request) {
 
         String hashedFileName = imageService.uploadImage(
-                request.getChildId().toString(),
+                request.getChildId(),
                 request.getLocalDateTime().toString(),
                 request.getFile()
         );
@@ -30,7 +30,7 @@ public class ImageController {
     public ResponseEntity<String> uploadNumberImage(@Valid @ModelAttribute UploadNumberImageRequest request) {
 
         String hashedFileName = imageService.uploadImage(
-                request.getChildId().toString(),
+                request.getChildId(),
                 request.getLocalDateTime().toString(),
                 request.getNumber(),
                 request.getFile()
