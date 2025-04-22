@@ -35,6 +35,20 @@ spring:
     bus:
       enabled: true
 
+  # RabbitMQ: Spring Cloud Bus 활용을 위한 설정
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USERNAME}
+    password: ${RABBITMQ_PASSWORD}
+
+# Swagger
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
 # Eureka 통신
 eureka:
   instance:
@@ -43,9 +57,9 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka:8761/eureka
+      defaultZone: ${DEFAULT_EUREKA_URL}
 
 minio:
-  url: https://s3.nansan.site
+  url: ${MINIO_API_URL}
   access-key: ${MINIO_ACCESS_KEY}
   secret-key: ${MINIO_SECRET_KEY}
