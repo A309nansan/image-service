@@ -36,11 +36,12 @@ TOKEN_RESPONSES=$(curl -s --request POST \
 CLIENT_TOKEN=$(echo "$TOKEN_RESPONSES" | jq -r '.auth.client_token')
 
 SECRET_RESPONSE=$(curl -s --header "X-Vault-Token: ${CLIENT_TOKEN}" \
-  --request GET https://vault.nansan.site/v1/kv/data/auth)
+  --request GET https://vault.nansan.site/v1/kv/data/authentication)
 
-CONFIG_SERVER_URI=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.private.uri')
 CONFIG_SERVER_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.username')
 CONFIG_SERVER_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.configserver.password')
+RABBITMQ_USERNAME=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.rabbitmq.username')
+RABBITMQ_PASSWORD=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.rabbitmq.password')
 MINIO_ACCESS_KEY=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.minio.username')
 MINIO_SECRET_KEY=$(echo "$SECRET_RESPONSE" | jq -r '.data.data.minio.password')
 
@@ -62,9 +63,15 @@ log "Execute image-service..."
 docker run -d \
   --name image-service \
   --restart unless-stopped \
-  -e CONFIG_SERVER_URI=${CONFIG_SERVER_URI} \
+  -e CONFIG_SERVER_URI=http://config-server:8888 \
   -e CONFIG_SERVER_USERNAME=${CONFIG_SERVER_USERNAME} \
   -e CONFIG_SERVER_PASSWORD=${CONFIG_SERVER_PASSWORD} \
+  -e RABBITMQ_HOST=rabbitmq \
+  -e RABBITMQ_PORT=5672 \
+  -e RABBITMQ_USERNAME=${RABBITMQ_USERNAME} \
+  -e RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD} \
+  -e DEFAULT_EUREKA_URL=http://eureka:8761/eureka \
+  -e MINIO_API_URL=https://s3.nansan.site \
   -e MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY} \
   -e MINIO_SECRET_KEY=${MINIO_SECRET_KEY} \
   --network nansan-network \
