@@ -8,6 +8,4 @@ WORKDIR /app
 
 COPY build/libs/*.jar image-service.jar
 
-EXPOSE 18084
-
 ENTRYPOINT ["java", "-jar", "/app/image-service.jar"]
